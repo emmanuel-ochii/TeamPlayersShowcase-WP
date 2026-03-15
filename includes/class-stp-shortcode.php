@@ -36,6 +36,8 @@ class STP_Shortcode {
 				'ids'    => '',
 				'number' => -1,
 				'order'  => 'ASC',
+				'layout' => 'rows',
+				'columns' => 2,
 				'class'  => '',
 			),
 			is_array( $atts ) ? $atts : array(),
@@ -45,6 +47,8 @@ class STP_Shortcode {
 		$ids    = self::sanitize_ids( (string) $atts['ids'] );
 		$number = (int) $atts['number'];
 		$order  = in_array( strtoupper( (string) $atts['order'] ), array( 'ASC', 'DESC' ), true ) ? strtoupper( (string) $atts['order'] ) : 'ASC';
+		$layout  = self::sanitize_layout( (string) $atts['layout'] );
+		$columns = self::sanitize_columns( $atts['columns'] );
 
 		$query_args = array(
 			'post_type'           => STP_Post_Type::POST_TYPE,
@@ -72,13 +76,16 @@ class STP_Shortcode {
 
 		STP_Assets::enqueue_frontend();
 
-		$wrapper_classes = array( 'stp-player-cards' );
+		$wrapper_classes   = array( 'stp-player-cards' );
+		$wrapper_classes[] = ( 'columns' === $layout ) ? 'stp-player-cards--columns' : 'stp-player-cards--rows';
+
 		$wrapper_classes = array_merge( $wrapper_classes, self::sanitize_user_classes( (string) $atts['class'] ) );
 		$wrapper_class   = implode( ' ', array_unique( $wrapper_classes ) );
+		$wrapper_style   = ( 'columns' === $layout ) ? '--stp-grid-columns:' . $columns . ';' : '';
 
 		ob_start();
 		?>
-		<section class="<?php echo esc_attr( $wrapper_class ); ?>">
+		<section class="<?php echo esc_attr( $wrapper_class ); ?>"<?php echo '' !== $wrapper_style ? ' style="' . esc_attr( $wrapper_style ) . '"' : ''; ?>>
 			<?php
 			while ( $query->have_posts() ) :
 				$query->the_post();
@@ -201,6 +208,42 @@ class STP_Shortcode {
 		}
 
 		return array_values( array_unique( array_map( 'absint', $ids_array ) ) );
+	}
+
+	/**
+	 * Sanitize multi-player layout option.
+	 *
+	 * @param string $layout Layout value.
+	 * @return string
+	 */
+	private static function sanitize_layout( $layout ) {
+		$value = strtolower( trim( $layout ) );
+
+		if ( in_array( $value, array( 'columns', 'column', 'grid' ), true ) ) {
+			return 'columns';
+		}
+
+		return 'rows';
+	}
+
+	/**
+	 * Sanitize columns count for multi-player columns layout.
+	 *
+	 * @param mixed $columns Columns value.
+	 * @return int
+	 */
+	private static function sanitize_columns( $columns ) {
+		$columns_count = absint( $columns );
+
+		if ( $columns_count < 2 ) {
+			return 2;
+		}
+
+		if ( $columns_count > 4 ) {
+			return 4;
+		}
+
+		return $columns_count;
 	}
 
 	/**

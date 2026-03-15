@@ -62,7 +62,14 @@ Attributes:
 - `ids` comma-separated player IDs (optional), e.g. `ids="123,432,123"`
 - `number` number of players to display (optional, default all)
 - `order` `ASC` or `DESC` (optional, default `ASC`)
+- `layout` `rows` or `columns` (optional, default `rows`)
+- `columns` number of columns when `layout="columns"` (2 to 4, default `2`)
 - `class` extra CSS classes (optional)
+
+Layout behavior:
+
+- `layout="rows"`: one card per row (vertical stack)
+- `layout="columns"`: grid layout (2 to 4 columns)
 
 Examples:
 
@@ -80,6 +87,14 @@ Examples:
 
 ```text
 [stp_players ids="123,432,123" number="2"]
+```
+
+```text
+[stp_players layout="columns" columns="3"]
+```
+
+```text
+[stp_players ids="123,432,123" layout="columns" columns="2"]
 ```
 
 Alias: `[team_players]`

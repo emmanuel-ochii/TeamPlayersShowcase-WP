@@ -26,11 +26,14 @@ class STP_Assets {
 	 * @return void
 	 */
 	public static function register_frontend_assets() {
+		$style_path = STP_PLUGIN_DIR . 'assets/css/stp-players.css';
+		$style_ver  = file_exists( $style_path ) ? (string) filemtime( $style_path ) : STP_PLUGIN_VERSION;
+
 		wp_register_style(
 			'stp-player-card',
 			STP_PLUGIN_URL . 'assets/css/stp-players.css',
 			array(),
-			STP_PLUGIN_VERSION
+			$style_ver
 		);
 	}
 
