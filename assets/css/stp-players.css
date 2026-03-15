@@ -8,6 +8,11 @@
   width: 100%;
 }
 
+.stp-player-cards {
+  display: grid;
+  gap: 24px;
+}
+
 .stp-player {
   --stp-bg: #12161c;
   --stp-border: #2a3139;

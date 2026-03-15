@@ -48,4 +48,38 @@ Notes:
 
 - If `id` is omitted and you are on a single player page, current player is used.
 - If `id` is omitted outside a single player page, latest published player is used.
-- Backward aliases still work: `[stp_players]` and `[team_players]`.
+
+## Multi-player shortcode
+
+Use:
+
+```text
+[stp_players]
+```
+
+Attributes:
+
+- `ids` comma-separated player IDs (optional), e.g. `ids="123,432,123"`
+- `number` number of players to display (optional, default all)
+- `order` `ASC` or `DESC` (optional, default `ASC`)
+- `class` extra CSS classes (optional)
+
+Examples:
+
+```text
+[stp_players]
+```
+
+```text
+[stp_players ids="123,432,123"]
+```
+
+```text
+[stp_players number="6"]
+```
+
+```text
+[stp_players ids="123,432,123" number="2"]
+```
+
+Alias: `[team_players]`

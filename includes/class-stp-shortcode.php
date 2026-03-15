@@ -19,9 +19,77 @@ class STP_Shortcode {
 	public static function init() {
 		add_shortcode( 'stp_player_card', array( __CLASS__, 'render_player_card_shortcode' ) );
 
-		// Backward alias from the previous iteration.
-		add_shortcode( 'stp_players', array( __CLASS__, 'render_player_card_shortcode' ) );
-		add_shortcode( 'team_players', array( __CLASS__, 'render_player_card_shortcode' ) );
+		// Multi-player shortcode.
+		add_shortcode( 'stp_players', array( __CLASS__, 'render_players_shortcode' ) );
+		add_shortcode( 'team_players', array( __CLASS__, 'render_players_shortcode' ) );
+	}
+
+	/**
+	 * Render multiple player cards.
+	 *
+	 * @param array<string, mixed> $atts Shortcode attributes.
+	 * @return string
+	 */
+	public static function render_players_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'ids'    => '',
+				'number' => -1,
+				'order'  => 'ASC',
+				'class'  => '',
+			),
+			is_array( $atts ) ? $atts : array(),
+			'stp_players'
+		);
+
+		$ids    = self::sanitize_ids( (string) $atts['ids'] );
+		$number = (int) $atts['number'];
+		$order  = in_array( strtoupper( (string) $atts['order'] ), array( 'ASC', 'DESC' ), true ) ? strtoupper( (string) $atts['order'] ) : 'ASC';
+
+		$query_args = array(
+			'post_type'           => STP_Post_Type::POST_TYPE,
+			'post_status'         => 'publish',
+			'posts_per_page'      => $number > 0 ? $number : -1,
+			'orderby'             => 'menu_order',
+			'order'               => $order,
+			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
+		);
+
+		if ( ! empty( $ids ) ) {
+			$query_args['post__in'] = $ids;
+			$query_args['orderby']  = 'post__in';
+
+			if ( $number <= 0 ) {
+				$query_args['posts_per_page'] = count( $ids );
+			}
+		}
+
+		$query = new WP_Query( $query_args );
+		if ( ! $query->have_posts() ) {
+			return '<p class="stp-player-empty">' . esc_html__( 'No players found.', 'team-players-showcase' ) . '</p>';
+		}
+
+		STP_Assets::enqueue_frontend();
+
+		$wrapper_classes = array( 'stp-player-cards' );
+		$wrapper_classes = array_merge( $wrapper_classes, self::sanitize_user_classes( (string) $atts['class'] ) );
+		$wrapper_class   = implode( ' ', array_unique( $wrapper_classes ) );
+
+		ob_start();
+		?>
+		<section class="<?php echo esc_attr( $wrapper_class ); ?>">
+			<?php
+			while ( $query->have_posts() ) :
+				$query->the_post();
+				echo self::render_card( get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			endwhile;
+			?>
+		</section>
+		<?php
+
+		wp_reset_postdata();
+		return (string) ob_get_clean();
 	}
 
 	/**
@@ -118,6 +186,21 @@ class STP_Shortcode {
 		<?php
 
 		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Sanitize comma-separated post IDs.
+	 *
+	 * @param string $ids Comma-separated IDs.
+	 * @return array<int, int>
+	 */
+	private static function sanitize_ids( $ids ) {
+		$ids_array = wp_parse_id_list( $ids );
+		if ( empty( $ids_array ) ) {
+			return array();
+		}
+
+		return array_values( array_unique( array_map( 'absint', $ids_array ) ) );
 	}
 
 	/**
