@@ -24,6 +24,7 @@ require_once STP_PLUGIN_DIR . 'includes/class-stp-meta-boxes.php';
 require_once STP_PLUGIN_DIR . 'includes/class-stp-assets.php';
 require_once STP_PLUGIN_DIR . 'includes/class-stp-shortcode.php';
 require_once STP_PLUGIN_DIR . 'includes/class-stp-templates.php';
+require_once STP_PLUGIN_DIR . 'includes/class-stp-settings.php';
 
 register_activation_hook( __FILE__, array( 'STP_Plugin', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'STP_Plugin', 'deactivate' ) );

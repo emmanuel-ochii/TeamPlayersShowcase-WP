@@ -42,6 +42,7 @@ final class STP_Plugin {
 		STP_Assets::init();
 		STP_Shortcode::init();
 		STP_Templates::init();
+		STP_Settings::init();
 	}
 
 	/**

@@ -145,6 +145,7 @@ class STP_Shortcode {
 	 * @return string
 	 */
 	private static function render_card( $post_id ) {
+		$post_id         = absint( $post_id );
 		$player_name     = get_the_title( $post_id );
 		$age             = absint( get_post_meta( $post_id, '_stp_age', true ) );
 		$experience      = absint( get_post_meta( $post_id, '_stp_experience', true ) );
@@ -166,7 +167,7 @@ class STP_Shortcode {
 
 		ob_start();
 		?>
-		<article class="stp-player">
+		<article class="<?php echo esc_attr( 'stp-player stp-player--id-' . $post_id ); ?>" data-player-id="<?php echo esc_attr( $post_id ); ?>">
 			<div class="stp-player__stats">
 				<?php echo self::render_stat( __( 'Age', 'team-players-showcase' ), $age ? (string) $age : '--' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php echo self::render_stat( __( 'Exp', 'team-players-showcase' ), self::format_experience( $experience ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

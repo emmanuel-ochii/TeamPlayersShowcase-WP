@@ -20,6 +20,7 @@ This plugin is now intentionally scoped to one job only: render a single screens
 1. Copy `team-players-showcase` into `wp-content/plugins/` or upload the zip.
 2. Activate **Team Players Showcase**.
 3. Go to **Players** and add player entries (with featured image).
+4. Optional: go to **Players > Showcase Settings** to add custom CSS overrides.
 
 ## Shortcode
 
@@ -98,3 +99,27 @@ Examples:
 ```
 
 Alias: `[team_players]`
+
+## Custom CSS (Best Practice Overrides)
+
+Use **Players > Showcase Settings** to add CSS without editing plugin files.
+
+Stable selectors:
+
+- All cards: `.stp-player`
+- Cards wrapper (multi): `.stp-player-cards`
+- Specific player card by ID: `.stp-player--id-123`
+- Specific player card by data attribute: `.stp-player[data-player-id=\"123\"]`
+
+Example:
+
+```css
+.stp-player {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.stp-player--id-123 .stp-player__name {
+  background: #2d4f7a;
+}
+```

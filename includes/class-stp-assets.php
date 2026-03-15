@@ -48,5 +48,10 @@ class STP_Assets {
 		}
 
 		wp_enqueue_style( 'stp-player-card' );
+
+		$custom_css = STP_Settings::get_custom_css();
+		if ( '' !== $custom_css ) {
+			wp_add_inline_style( 'stp-player-card', $custom_css );
+		}
 	}
 }
