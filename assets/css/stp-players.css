@@ -1,16 +1,18 @@
 .stp-template__inner {
-  width: min(860px, 94vw);
+  width: min(1040px, 94vw);
   margin-inline: auto;
   padding-block: clamp(18px, 3vw, 42px);
 }
 
 .stp-player-card {
   width: 100%;
+  display: grid;
 }
 
 .stp-player-cards {
   display: grid;
-  gap: 24px;
+  gap: clamp(18px, 2vw, 24px);
+  align-items: start;
 }
 
 .stp-player-cards--rows {
@@ -24,57 +26,83 @@
 .stp-player {
   --stp-bg: #12161c;
   --stp-border: #2a3139;
-  --stp-panel: #242a31;
+  --stp-panel: #252525;
   --stp-name-bg: #585f69;
   --stp-role-bg: #005b35;
   --stp-text: #f2f4f7;
   --stp-muted: #aab2bc;
+  --stp-card-ratio: 397 / 344;
+  --stp-footer-height: 92px;
+  --stp-stats-col: 22.7%;
 
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: var(--stp-card-ratio);
   display: grid;
-  grid-template-columns: 132px 1fr;
+  grid-template-columns: minmax(78px, var(--stp-stats-col)) minmax(0, 1fr);
   border: 1px solid var(--stp-border);
   background: var(--stp-bg);
   color: var(--stp-text);
-  min-height: 860px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stp-player-card .stp-player,
+.stp-player-cards--rows .stp-player {
+  margin-inline: auto;
+}
+
+.stp-player-cards--columns .stp-player {
+  max-width: none;
 }
 
 .stp-player__stats {
   background: var(--stp-panel);
-  padding: 30px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
+  padding: 8px 10px;
+  display: grid;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+  min-height: 0;
 }
 
 .stp-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   text-align: center;
+  min-height: 0;
 }
 
 .stp-stat__label {
   display: block;
   color: var(--stp-muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  font-size: clamp(0.82rem, 1.15vw, 0.98rem);
+  line-height: 1;
 }
 
 .stp-stat__value {
   display: block;
-  margin-top: 4px;
+  margin-top: 0;
   color: var(--stp-text);
-  font-size: clamp(1.45rem, 2vw, 2.05rem);
+  font-size: clamp(1.2rem, 2.1vw, 2rem);
   font-weight: 700;
+  line-height: 1.1;
 }
 
 .stp-player__main {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) var(--stp-footer-height);
   min-width: 0;
+  min-height: 0;
 }
 
 .stp-player__image-wrap {
   background: #dbdde1;
-  min-height: 650px;
+  min-height: 0;
 }
 
 .stp-player__img {
@@ -94,20 +122,20 @@
 
 .stp-player__footer {
   display: grid;
-  grid-template-columns: 1fr 220px;
-  min-height: 185px;
+  grid-template-columns: minmax(0, 1fr) minmax(110px, 30%);
+  min-height: 0;
 }
 
 .stp-player__name {
   margin: 0;
-  padding: 24px 20px;
+  padding: 14px 16px;
   background: var(--stp-name-bg);
   color: #e3e7ed;
   text-transform: uppercase;
   line-height: 1.08;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   font-weight: 800;
-  font-size: clamp(2rem, 3vw, 3.2rem);
+  font-size: clamp(1.05rem, 2.2vw, 2.1rem);
   display: flex;
   align-items: center;
 }
@@ -118,16 +146,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
   text-align: center;
-  padding: 20px 16px;
+  padding: 10px 8px;
 }
 
 .stp-player__number {
   display: block;
   color: var(--stp-text);
   font-weight: 800;
-  font-size: clamp(2.9rem, 4vw, 4.2rem);
+  font-size: clamp(2rem, 3.3vw, 3.2rem);
   line-height: 1;
 }
 
@@ -135,8 +163,9 @@
   display: block;
   color: #c5d7ce;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  font-size: clamp(0.75rem, 1.05vw, 1.02rem);
+  line-height: 1.05;
 }
 
 .stp-player-empty {
@@ -164,6 +193,8 @@
   }
 
   .stp-player {
+    max-width: none;
+    aspect-ratio: auto;
     grid-template-columns: 1fr;
     min-height: 0;
   }
@@ -171,20 +202,34 @@
   .stp-player__stats {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-    padding: 14px;
+    grid-template-rows: none;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .stp-stat {
+    gap: 4px;
+  }
+
+  .stp-player__main {
+    grid-template-rows: minmax(260px, 1fr) auto;
   }
 
   .stp-player__image-wrap {
-    min-height: 430px;
+    min-height: 320px;
   }
 
   .stp-player__footer {
     grid-template-columns: 1fr;
   }
 
+  .stp-player__name {
+    min-height: 78px;
+  }
+
   .stp-player__identity {
     flex-direction: row;
     justify-content: space-between;
+    padding-inline: 16px;
   }
 }
