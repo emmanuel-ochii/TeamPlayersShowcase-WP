@@ -172,7 +172,7 @@ class STP_Shortcode {
 				<?php echo self::render_stat( __( 'Age', 'team-players-showcase' ), $age ? (string) $age : '--' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php echo self::render_stat( __( 'Exp', 'team-players-showcase' ), self::format_experience( $experience ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php echo self::render_stat( __( 'Ht', 'team-players-showcase' ), '' !== $height_imperial ? $height_imperial : '--' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<?php echo self::render_stat( __( 'Ht', 'team-players-showcase' ), $height_metric ? (string) $height_metric : '--' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo self::render_stat( __( 'Wt', 'team-players-showcase' ), $height_metric ? (string) $height_metric : '--' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
 			<div class="stp-player__main">
 				<div class="stp-player__image-wrap">
