@@ -32,7 +32,7 @@
   --stp-text: #f2f4f7;
   --stp-muted: #aab2bc;
   --stp-card-ratio: 397 / 344;
-  --stp-footer-min-height: 108px;
+  --stp-footer-min-height: 92px;
   --stp-stats-col: 22.7%;
 
   width: 100%;
@@ -130,13 +130,13 @@
 
 .stp-player__footer {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(112px, 31%);
+  grid-template-columns: 70% 30%;
   min-height: var(--stp-footer-min-height);
 }
 
 .stp-player__name {
   margin: 0;
-  padding: 14px 16px;
+  padding: 10px 16px;
   background: var(--stp-name-bg);
   color: #dbdde0;
   font-family: "Montserrat", sans-serif;
@@ -159,7 +159,7 @@
   justify-content: center;
   gap: 2px;
   text-align: right;
-  padding: 10px 12px 10px 8px;
+  padding: 8px 12px 8px 8px;
 }
 
 .stp-player__number {
