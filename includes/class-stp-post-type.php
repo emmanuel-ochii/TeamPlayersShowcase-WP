@@ -47,6 +47,10 @@ class STP_Post_Type {
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 			),
+			'_stp_player_link'     => array(
+				'type'              => 'string',
+				'sanitize_callback' => 'esc_url_raw',
+			),
 		);
 	}
 

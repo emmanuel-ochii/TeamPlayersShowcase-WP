@@ -151,6 +151,16 @@
   overflow-wrap: anywhere;
 }
 
+.stp-player__name-link,
+.stp-player__name-link:visited,
+.stp-player__name-link:hover,
+.stp-player__name-link:focus,
+.stp-player__name-link:focus-visible,
+.stp-player__name-link:active {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
 .stp-player__identity {
   background: var(--stp-role-bg);
   display: flex;

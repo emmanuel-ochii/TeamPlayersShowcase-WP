@@ -52,6 +52,7 @@ class STP_Meta_Boxes {
 		$height_metric   = get_post_meta( $post->ID, '_stp_height_metric', true );
 		$position        = get_post_meta( $post->ID, '_stp_position', true );
 		$jersey_number   = get_post_meta( $post->ID, '_stp_jersey_number', true );
+		$player_link     = get_post_meta( $post->ID, '_stp_player_link', true );
 		?>
 		<p>
 			<label for="stp_jersey_number"><strong><?php esc_html_e( 'Jersey Number', 'team-players-showcase' ); ?></strong></label><br>
@@ -60,6 +61,10 @@ class STP_Meta_Boxes {
 		<p>
 			<label for="stp_position"><strong><?php esc_html_e( 'Position', 'team-players-showcase' ); ?></strong></label><br>
 			<input type="text" class="regular-text" id="stp_position" name="stp_position" value="<?php echo esc_attr( $position ); ?>" placeholder="<?php esc_attr_e( 'Forward, Guard, Center...', 'team-players-showcase' ); ?>">
+		</p>
+		<p>
+			<label for="stp_player_link"><strong><?php esc_html_e( 'Player Link', 'team-players-showcase' ); ?></strong></label><br>
+			<input type="url" class="regular-text" id="stp_player_link" name="stp_player_link" value="<?php echo esc_attr( $player_link ); ?>" placeholder="<?php esc_attr_e( 'https://example.com/player-profile', 'team-players-showcase' ); ?>">
 		</p>
 		<p>
 			<label for="stp_age"><strong><?php esc_html_e( 'Age', 'team-players-showcase' ); ?></strong></label><br>
@@ -111,6 +116,7 @@ class STP_Meta_Boxes {
 			'_stp_height_metric'   => isset( $_POST['stp_height_metric'] ) ? absint( wp_unslash( $_POST['stp_height_metric'] ) ) : '',
 			'_stp_position'        => isset( $_POST['stp_position'] ) ? sanitize_text_field( wp_unslash( $_POST['stp_position'] ) ) : '',
 			'_stp_jersey_number'   => isset( $_POST['stp_jersey_number'] ) ? absint( wp_unslash( $_POST['stp_jersey_number'] ) ) : '',
+			'_stp_player_link'     => isset( $_POST['stp_player_link'] ) ? esc_url_raw( trim( (string) wp_unslash( $_POST['stp_player_link'] ) ) ) : '',
 		);
 
 		foreach ( $meta_map as $meta_key => $meta_value ) {

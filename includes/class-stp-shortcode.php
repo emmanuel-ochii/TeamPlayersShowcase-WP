@@ -153,6 +153,7 @@ class STP_Shortcode {
 		$height_metric   = absint( get_post_meta( $post_id, '_stp_height_metric', true ) );
 		$position        = sanitize_text_field( (string) get_post_meta( $post_id, '_stp_position', true ) );
 		$jersey_number   = absint( get_post_meta( $post_id, '_stp_jersey_number', true ) );
+		$player_link     = esc_url_raw( (string) get_post_meta( $post_id, '_stp_player_link', true ) );
 
 		$image_html = get_the_post_thumbnail(
 			$post_id,
@@ -164,6 +165,7 @@ class STP_Shortcode {
 				'alt'      => $player_name,
 			)
 		);
+		$player_name_for_card = self::format_player_name_for_card( $player_name );
 
 		ob_start();
 		?>
@@ -183,7 +185,15 @@ class STP_Shortcode {
 					<?php endif; ?>
 				</div>
 				<div class="stp-player__footer">
-					<h3 class="stp-player__name"><?php echo esc_html( $player_name ); ?></h3>
+					<h3 class="stp-player__name">
+						<?php if ( '' !== $player_link ) : ?>
+							<a class="stp-player__name-link" href="<?php echo esc_url( $player_link ); ?>">
+								<?php echo wp_kses( $player_name_for_card, array( 'br' => array() ) ); ?>
+							</a>
+						<?php else : ?>
+							<?php echo wp_kses( $player_name_for_card, array( 'br' => array() ) ); ?>
+						<?php endif; ?>
+					</h3>
 					<div class="stp-player__identity">
 						<span class="stp-player__number"><?php echo esc_html( self::format_jersey_number( $jersey_number ) ); ?></span>
 						<span class="stp-player__position"><?php echo esc_html( '' !== $position ? $position : __( 'N/A', 'team-players-showcase' ) ); ?></span>
@@ -284,6 +294,32 @@ class STP_Shortcode {
 			esc_html( $label ),
 			esc_html( $value )
 		);
+	}
+
+	/**
+	 * Format player name for card display.
+	 *
+	 * First token renders on line 1 and remaining tokens on line 2.
+	 *
+	 * @param string $player_name Raw player title.
+	 * @return string
+	 */
+	private static function format_player_name_for_card( $player_name ) {
+		$parts = preg_split( '/\s+/', trim( wp_strip_all_tags( (string) $player_name ) ) );
+		$parts = is_array( $parts ) ? array_values( array_filter( $parts ) ) : array();
+
+		if ( empty( $parts ) ) {
+			return '--';
+		}
+
+		if ( 1 === count( $parts ) ) {
+			return esc_html( $parts[0] );
+		}
+
+		$first_name = array_shift( $parts );
+		$last_name  = implode( ' ', $parts );
+
+		return esc_html( (string) $first_name ) . '<br />' . esc_html( $last_name );
 	}
 
 	/**
