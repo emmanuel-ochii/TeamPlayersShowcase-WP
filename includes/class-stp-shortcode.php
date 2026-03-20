@@ -152,7 +152,8 @@ class STP_Shortcode {
 		$height_imperial = sanitize_text_field( (string) get_post_meta( $post_id, '_stp_height_imperial', true ) );
 		$height_metric   = absint( get_post_meta( $post_id, '_stp_height_metric', true ) );
 		$position        = sanitize_text_field( (string) get_post_meta( $post_id, '_stp_position', true ) );
-		$jersey_number   = absint( get_post_meta( $post_id, '_stp_jersey_number', true ) );
+		$jersey_number_raw = get_post_meta( $post_id, '_stp_jersey_number', true );
+		$jersey_number     = '' === (string) $jersey_number_raw ? null : absint( $jersey_number_raw );
 		$player_link     = esc_url_raw( (string) get_post_meta( $post_id, '_stp_player_link', true ) );
 
 		$image_html = get_the_post_thumbnail(
@@ -325,15 +326,15 @@ class STP_Shortcode {
 	/**
 	 * Format jersey number.
 	 *
-	 * @param int $jersey Jersey number.
+	 * @param int|null $jersey Jersey number.
 	 * @return string
 	 */
 	private static function format_jersey_number( $jersey ) {
-		if ( $jersey <= 0 ) {
+		if ( null === $jersey ) {
 			return '--';
 		}
 
-		return str_pad( (string) $jersey, 2, '0', STR_PAD_LEFT );
+		return (string) absint( $jersey );
 	}
 
 	/**
